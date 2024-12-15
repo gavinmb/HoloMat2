@@ -77,6 +77,7 @@ To adjust the position and layout of the circles, modify the `create_circles()` 
 
 ### **Touch Input Doesn't Match Display**
 - Adjust the `map_coords()` function to correctly align touch coordinates with the display.
+- I found the touch screen i bought to be inverted and rotated. Yours may not be.
 
 ### **Audio Not Playing**
 - Make sure the `.wav` files are present in the `audio/` folder.
