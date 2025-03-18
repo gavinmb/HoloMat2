@@ -3,6 +3,7 @@ import sys
 import os
 from datetime import datetime
 from dotenv import load_dotenv
+from utils import map_coords
 
 load_dotenv()
 
@@ -28,11 +29,6 @@ TRACE_THICKNESS = 20
 RING_RADIUS = 26
 RING_THICKNESS = 18
 BUTTON_HEIGHT = 80  # Increased button height
-
-def map_coords(x, y):
-    mapped_x = (y / 1080) * 1920
-    mapped_y = 1080 - ((x / 1920) * 1080)
-    return int(mapped_x), int(mapped_y)
 
 class Button:
     def __init__(self, rect, label):

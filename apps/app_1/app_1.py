@@ -5,6 +5,8 @@ import time
 import math
 from dotenv import load_dotenv
 import os
+from utils import map_coords, distance, play_sound
+import colors as COLORS
 
 load_dotenv()
 # Initialize Pygame
@@ -14,34 +16,17 @@ mixer.init()
 SCREEN_WIDTH = int(os.getenv('SCREEN_WIDTH'))
 SCREEN_HEIGHT = int(os.getenv('SCREEN_HEIGHT'))
 SCREEN_SIZE = (SCREEN_WIDTH, SCREEN_HEIGHT)
-BLACK = (0, 0, 0)
-LIGHT_BLUE = (173, 216, 230)
-WHITE = (255, 255, 255)
-NAVY_BLUE = (20, 20, 40)
 PIXEL_TO_MM = 0.4478  # Adjust this variable as needed
-
-def map_coords(x, y):
-    mapped_x = (y / 1080) * 1920
-    mapped_y = 1080 - ((x / 1920) * 1080)
-    return int(mapped_x), int(mapped_y)
-
-def distance(p1, p2):
-    return math.sqrt((p1[0] - p2[0])**2 + (p1[1] - p2[1])**2)
-
-def play_sound(file_path):
-    mixer.music.stop()
-    mixer.music.load(file_path)
-    mixer.music.play()
 
 def draw_line_with_measurement(screen, start_point, end_point):
     if start_point and end_point:
-        pygame.draw.line(screen, LIGHT_BLUE, start_point, end_point, 2)
-        pygame.draw.circle(screen, LIGHT_BLUE, start_point, 5)
-        pygame.draw.circle(screen, LIGHT_BLUE, end_point, 5)
+        pygame.draw.line(screen, COLORS.LIGHT_BLUE, start_point, end_point, 2)
+        pygame.draw.circle(screen, COLORS.LIGHT_BLUE, start_point, 5)
+        pygame.draw.circle(screen, COLORS.LIGHT_BLUE, end_point, 5)
         mid_line_point = ((start_point[0] + end_point[0]) // 2, (start_point[1] + end_point[1]) // 2)
         line_length = distance(start_point, end_point) * PIXEL_TO_MM
         font = pygame.font.Font(None, 36)
-        text_surface = font.render(f'{line_length:.2f} mm', True, WHITE)
+        text_surface = font.render(f'{line_length:.2f} mm', True, COLORS.WHITE)
         screen.blit(text_surface, mid_line_point)
 
 def run(screen):
@@ -86,7 +71,7 @@ def run(screen):
                 if drawing:
                     end_point = map_coords(*event.pos)
 
-        screen.fill(BLACK)
+        screen.fill(COLORS.BLACK)
 
         # Draw all permanent lines
         for line in permanent_lines:
@@ -97,17 +82,17 @@ def run(screen):
             draw_line_with_measurement(screen, start_point, end_point)
 
         # Draw the Home button
-        pygame.draw.circle(screen, NAVY_BLUE, home_button_center, home_button_radius)
-        pygame.draw.circle(screen, LIGHT_BLUE, home_button_center, home_button_radius, 5)
+        pygame.draw.circle(screen, COLORS.NAVY_BLUE, home_button_center, home_button_radius)
+        pygame.draw.circle(screen, COLORS.LIGHT_BLUE, home_button_center, home_button_radius, 5)
         font = pygame.font.Font(None, 36)
-        text_surface = font.render('Home', True, WHITE)
+        text_surface = font.render('Home', True, COLORS.WHITE)
         text_rect = text_surface.get_rect(center=home_button_center)
         screen.blit(text_surface, text_rect)
 
         # Draw the Clear button
-        pygame.draw.rect(screen, NAVY_BLUE, clear_button_rect, border_radius=15)
-        pygame.draw.rect(screen, LIGHT_BLUE, clear_button_rect, 5, border_radius=15)
-        text_surface = font.render('Clear', True, WHITE)
+        pygame.draw.rect(screen, COLORS.NAVY_BLUE, clear_button_rect, border_radius=15)
+        pygame.draw.rect(screen, COLORS.LIGHT_BLUE, clear_button_rect, 5, border_radius=15)
+        text_surface = font.render('Clear', True, COLORS.WHITE)
         text_rect = text_surface.get_rect(center=clear_button_rect.center)
         screen.blit(text_surface, text_rect)
 

@@ -2,7 +2,7 @@ import pygame
 import sys
 import os
 from dotenv import load_dotenv
-from RealtimeSTT import AudioToTextRecorder
+# from RealtimeSTT import AudioToTextRecorder
 
 load_dotenv()
 

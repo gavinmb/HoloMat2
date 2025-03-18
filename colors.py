@@ -1,0 +1,8 @@
+# Colors
+BLACK = (0, 0, 0)
+LIGHT_BLUE = (173, 216, 230)
+WHITE = (255, 255, 255)
+LIGHT_GRAY = (200, 200, 200)
+NAVY_BLUE = (20, 20, 40)
+RED = (255, 0, 0)
+BLUE = (0, 0, 255)

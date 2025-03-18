@@ -5,6 +5,8 @@ import os
 import sys
 import math
 from dotenv import load_dotenv
+from utils import map_coords, play_sound
+import colors as COLORS
 
 load_dotenv()
 
@@ -12,18 +14,18 @@ load_dotenv()
 pygame.init()
 # Initialize the mixer
 mixer.init()
-SCREEN_WIDTH = int(os.getenv('SCREEN_WIDTH'))
-SCREEN_HEIGHT = int(os.getenv('SCREEN_HEIGHT'))
+
+# Get the current display height and width
+infoObject = pygame.display.Info()
+SCREEN_WIDTH = infoObject.current_w
+SCREEN_HEIGHT = infoObject.current_h
+# SCREEN_WIDTH = int(os.getenv('SCREEN_WIDTH'))
+# SCREEN_HEIGHT = int(os.getenv('SCREEN_HEIGHT'))
+
 SCREEN_SIZE = (SCREEN_WIDTH, SCREEN_HEIGHT)
-NAVY_BLUE = (20, 20, 40)
-LIGHT_BLUE = (173, 216, 230)
 HOME_TOGGLE_DELAY = 1.0  # Delay in seconds for home button toggle
 APP_SELECT_DELAY = 1.0  # Delay to prevent immediate app launch
 LOGO_DELAY = 1  # Delay in seconds before showing the logo
-
-def play_sound(file_path):
-    mixer.music.load(file_path)
-    mixer.music.play()
 
 class AppCircle:
     def __init__(self, center, radius, app_index, final_pos, is_main=False):
@@ -86,16 +88,11 @@ class AppCircle:
                 top_left = (self.center[0] - self.radius, self.center[1] - self.radius)
                 screen.blit(self.image, top_left)
             else:
-                pygame.draw.circle(screen, NAVY_BLUE, self.center, int(current_radius))
-            pygame.draw.circle(screen, LIGHT_BLUE, self.center, int(current_radius), 5)
+                pygame.draw.circle(screen, COLORS.NAVY_BLUE, self.center, int(current_radius))
+            pygame.draw.circle(screen, COLORS.LIGHT_BLUE, self.center, int(current_radius), 5)
 
     def is_hovered(self, pos):
         return math.hypot(pos[0] - self.center[0], pos[1] - self.center[1]) <= self.radius
-
-def map_coords(x, y):
-    mapped_x = (y / 1080) * 1920
-    mapped_y = 1080 - ((x / 1920) * 1080)
-    return mapped_x, mapped_y
 
 def create_circles():
     circles = []

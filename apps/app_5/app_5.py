@@ -2,6 +2,7 @@ import pygame
 import sys
 from dotenv import load_dotenv
 import os
+from utils import map_coords, play_sound, distance
 
 load_dotenv()
 
@@ -18,14 +19,10 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 LIGHT_GRAY = (200, 200, 200)
 LIGHT_BLUE = (173, 216, 230)
+NAVY_BLUE = (20, 20, 40)
 
 # Define fonts
 BUTTON_FONT = pygame.font.Font(None, 40)
-
-def map_coords(x, y):
-    mapped_x = (y / 1080) * 1920
-    mapped_y = 1080 - ((x / 1920) * 1080)
-    return int(mapped_x), int(mapped_y)
 
 class ClickRing:
     def __init__(self, pos):
@@ -107,6 +104,10 @@ class Slider:
         return knob_rect.collidepoint(pos)
 
 def run(screen):
+
+    home_button_center = (150, 100)
+    home_button_radius = 50
+
     # Button setup
     button_spacing = 10
     button_width, button_height = 150, 50
@@ -134,7 +135,9 @@ def run(screen):
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 x, y = map_coords(*event.pos)
-                
+                if distance((x, y), home_button_center) <= home_button_radius:
+                    running = False
+                    play_sound('audio/back.wav')
                 # Add a click ring at the clicked position
                 click_rings.append(ClickRing((x, y)))
                 
@@ -172,6 +175,14 @@ def run(screen):
         # Draw buttons
         for button in buttons:
             button.draw(screen)
+
+        # Draw the Home button
+        pygame.draw.circle(screen, NAVY_BLUE, home_button_center, home_button_radius)
+        pygame.draw.circle(screen, LIGHT_BLUE, home_button_center, home_button_radius, 5)
+        font = pygame.font.Font(None, 36)
+        text_surface = font.render('Home', True, WHITE)
+        text_rect = text_surface.get_rect(center=home_button_center)
+        screen.blit(text_surface, text_rect)
 
         # Draw slider
         slider.draw(screen)
